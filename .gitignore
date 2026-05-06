@@ -4,4 +4,4 @@
 .skills/
 *.md
 !README.md
-
+!WRITEUP.md
