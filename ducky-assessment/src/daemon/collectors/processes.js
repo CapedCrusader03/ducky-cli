@@ -22,11 +22,13 @@ export async function collectProcesses() {
     if (isWindows) {
       const { stdout } = await execFileAsync('tasklist', ['/FO', 'CSV', '/NH'], {
         timeout: 5000,
+        windowsHide: true,
       });
       output = stdout;
     } else {
       const { stdout } = await execFileAsync('ps', ['-eo', 'pid,comm'], {
         timeout: 5000,
+        windowsHide: true,
       });
       output = stdout;
     }

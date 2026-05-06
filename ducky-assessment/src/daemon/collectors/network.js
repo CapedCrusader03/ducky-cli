@@ -22,14 +22,14 @@ export async function collectNetwork() {
   let output = '';
   try {
     if (isWindows) {
-      const { stdout } = await execFileAsync('netstat', ['-n'], { timeout: 8000 });
+      const { stdout } = await execFileAsync('netstat', ['-n'], { timeout: 8000, windowsHide: true });
       output = stdout;
     } else if (isMac) {
-      const { stdout } = await execFileAsync('netstat', ['-n', '-f', 'inet'], { timeout: 8000 });
+      const { stdout } = await execFileAsync('netstat', ['-n', '-f', 'inet'], { timeout: 8000, windowsHide: true });
       output = stdout;
     } else {
       // Linux
-      const { stdout } = await execFileAsync('ss', ['-tn'], { timeout: 8000 });
+      const { stdout } = await execFileAsync('ss', ['-tn'], { timeout: 8000, windowsHide: true });
       output = stdout;
     }
   } catch {

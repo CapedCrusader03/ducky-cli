@@ -36,7 +36,7 @@ export async function collectGit(projectRoot, lastSeenHash) {
     return { latestHash: null, latestMessage: '', newCommits: 0, looksAIGenerated: false, diffStats: null };
   }
 
-  const execOpts = { cwd: projectRoot, timeout: 10000 };
+  const execOpts = { cwd: projectRoot, timeout: 10000, windowsHide: true };
 
   // Get latest commit hash and message
   let latestHash = null;

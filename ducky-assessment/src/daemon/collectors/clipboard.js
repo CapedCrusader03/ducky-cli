@@ -28,22 +28,22 @@ export async function collectClipboard() {
       const { stdout } = await execFileAsync(
         'powershell',
         ['-NoProfile', '-NonInteractive', '-Command', 'Get-Clipboard'],
-        { timeout: 3000 }
+        { timeout: 3000, windowsHide: true }
       );
       return stdout || '';
     } else if (platform === 'darwin') {
-      const { stdout } = await execFileAsync('pbpaste', [], { timeout: 3000 });
+      const { stdout } = await execFileAsync('pbpaste', [], { timeout: 3000, windowsHide: true });
       return stdout || '';
     } else {
       // Linux — try xclip, fall back to xsel
       try {
         const { stdout } = await execFileAsync(
-          'xclip', ['-selection', 'clipboard', '-o'], { timeout: 3000 }
+          'xclip', ['-selection', 'clipboard', '-o'], { timeout: 3000, windowsHide: true }
         );
         return stdout || '';
       } catch {
         const { stdout } = await execFileAsync(
-          'xsel', ['--clipboard', '--output'], { timeout: 3000 }
+          'xsel', ['--clipboard', '--output'], { timeout: 3000, windowsHide: true }
         );
         return stdout || '';
       }

@@ -1,6 +1,7 @@
 /**
  * config.js — All constants and configuration in one place.
- * No magic values scattered through the codebase.
+ * Modern developers increasingly use AI coding assistants.
+ * [TEST] This line was added by Antigravity to verify file change tracking.
  */
 
 import { join } from 'path';

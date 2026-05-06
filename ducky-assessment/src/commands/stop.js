@@ -31,7 +31,7 @@ async function killDaemon(pid) {
     // taskkill /F /PID ensures the process tree is terminated.
     const { execSync } = await import('child_process');
     try {
-      execSync(`taskkill /F /PID ${pid}`, { stdio: 'ignore' });
+      execSync(`taskkill /F /PID ${pid}`, { stdio: 'ignore', windowsHide: true });
     } catch {
       // Process may have already exited — not an error
     }
