@@ -56,6 +56,7 @@ export const AI_PROCESS_NAMES = [
   'supermaven',
   'aider',
   'ghostwriter',
+  'opencode',
 ];
 
 /** AI-related network hostnames to watch for */

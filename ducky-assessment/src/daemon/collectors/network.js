@@ -12,6 +12,28 @@ import { AI_NETWORK_HOSTS } from '../../config.js';
 
 const execFileAsync = promisify(execFile);
 
+/** Cache DNS resolutions to avoid re-querying on every 10s poll. */
+const DNS_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+let hostIpMap = new Map();
+let lastDnsResolveAt = 0;
+
+async function refreshDnsCache() {
+  const now = Date.now();
+  if (now - lastDnsResolveAt < DNS_CACHE_TTL_MS && hostIpMap.size > 0) return;
+
+  const freshMap = new Map();
+  for (const host of AI_NETWORK_HOSTS) {
+    try {
+      const ips = await resolve4(host);
+      for (const ip of ips) freshMap.set(ip, host);
+    } catch {
+      // DNS failure (no internet, NXDOMAIN) — skip this host
+    }
+  }
+  hostIpMap = freshMap;
+  lastDnsResolveAt = now;
+}
+
 /**
  * @returns {Promise<Array<{host: string, state: string, detectedAt: string}>>}
  */
@@ -39,17 +61,7 @@ export async function collectNetwork() {
 
   // netstat/ss gives us IPs, not hostnames. We do a reverse check:
   // Resolve AI hostnames to IPs once and match against active connections.
-  const hostIpMap = new Map();
-  for (const host of AI_NETWORK_HOSTS) {
-    try {
-      const ips = await resolve4(host);
-      for (const ip of ips) {
-        hostIpMap.set(ip, host);
-      }
-    } catch {
-      // DNS failure is normal (no internet, NXDOMAIN) — skip
-    }
-  }
+  await refreshDnsCache();
 
   const hits = [];
   const lines = output.split('\n').filter(Boolean);
