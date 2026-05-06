@@ -10,13 +10,15 @@
  */
 
 import { spawn } from 'child_process';
-import { writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync, mkdirSync, rmSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
 import { getLivePid, writePid } from '../lib/pid.js';
 import {
   getDuckyDir,
   getMetaPath,
+  getEventsPath,
+  getReportPath,
   SCHEMA_VERSION,
 } from '../config.js';
 
@@ -39,6 +41,13 @@ export async function startCommand(opts) {
   // --- Create .ducky/ directory ---
   const duckyDir = getDuckyDir(projectRoot);
   mkdirSync(duckyDir, { recursive: true });
+
+  // --- Clear stale data from any previous session ---
+  // Events and report must not bleed across sessions.
+  const eventsPath = getEventsPath(projectRoot);
+  if (existsSync(eventsPath)) rmSync(eventsPath);
+  const oldReport = getReportPath(projectRoot);
+  if (existsSync(oldReport)) rmSync(oldReport);
 
   // --- Write session metadata ---
   const sessionMeta = {
