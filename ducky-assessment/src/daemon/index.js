@@ -13,7 +13,14 @@
 
 import { existsSync, appendFileSync, mkdirSync } from 'fs';
 import { resolve } from 'path';
-import { getDaemonLogPath, getDuckyDir } from '../config.js';
+import {
+  getDaemonLogPath,
+  getDuckyDir,
+  PROCESS_POLL_INTERVAL_MS,
+  NETWORK_POLL_INTERVAL_MS,
+  GIT_POLL_INTERVAL_MS,
+  CLIPBOARD_POLL_INTERVAL_MS,
+} from '../config.js';
 import { collectProcesses } from './collectors/processes.js';
 import { collectNetwork } from './collectors/network.js';
 import { collectGit } from './collectors/git.js';
@@ -71,12 +78,6 @@ try {
 }
 
 // --- Polling loops ---
-import {
-  PROCESS_POLL_INTERVAL_MS,
-  NETWORK_POLL_INTERVAL_MS,
-  GIT_POLL_INTERVAL_MS,
-  CLIPBOARD_POLL_INTERVAL_MS,
-} from '../config.js';
 
 // Track seen process names to avoid flooding events with duplicates
 const seenProcesses = new Set();

@@ -9,13 +9,12 @@
  * 5. Print terminal summary.
  */
 
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { getLivePid, removePid } from '../lib/pid.js';
 import { readAllEvents } from '../lib/events.js';
 import { buildReport } from '../reporter.js';
 import { getMetaPath, getReportPath } from '../config.js';
-import { writeFileSync } from 'fs';
 
 const SIGTERM_WAIT_MS = 3000;
 const SIGKILL_WAIT_MS = 2000;

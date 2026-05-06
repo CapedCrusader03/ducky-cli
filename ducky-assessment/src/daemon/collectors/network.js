@@ -7,6 +7,7 @@
 
 import { execFile } from 'child_process';
 import { promisify } from 'util';
+import { resolve4 } from 'dns/promises';
 import { AI_NETWORK_HOSTS } from '../../config.js';
 
 const execFileAsync = promisify(execFile);
@@ -35,11 +36,9 @@ export async function collectNetwork() {
     return [];
   }
 
-  // netstat/ss gives us IPs, not hostnames. We do a reverse check:
-  // Resolve AI hostnames to IPs once and match against connection list.
-  // For speed and reliability, we attempt a lightweight DNS lookup per host.
-  const { resolve4 } = await import('dns/promises');
 
+  // netstat/ss gives us IPs, not hostnames. We do a reverse check:
+  // Resolve AI hostnames to IPs once and match against active connections.
   const hostIpMap = new Map();
   for (const host of AI_NETWORK_HOSTS) {
     try {

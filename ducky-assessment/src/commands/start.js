@@ -17,7 +17,6 @@ import { getLivePid, writePid } from '../lib/pid.js';
 import {
   getDuckyDir,
   getMetaPath,
-  getDaemonLogPath,
   SCHEMA_VERSION,
 } from '../config.js';
 
@@ -53,7 +52,6 @@ export async function startCommand(opts) {
 
   // --- Spawn daemon ---
   const daemonPath = join(__dirname, '..', 'daemon', 'index.js');
-  const logPath = getDaemonLogPath(projectRoot);
 
   // The daemon receives the projectRoot via environment variable.
   // We do NOT use argv to avoid quoting/escaping issues on Windows.
@@ -75,6 +73,10 @@ export async function startCommand(opts) {
   child.unref();
 
   const daemonPid = child.pid;
+  if (!daemonPid) {
+    console.error(`[ducky] Daemon process did not start (no PID assigned).`);
+    process.exit(1);
+  }
 
   // --- Write PID file ---
   writePid(projectRoot, daemonPid);
