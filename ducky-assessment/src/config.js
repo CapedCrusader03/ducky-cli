@@ -2,6 +2,9 @@
  * config.js — All constants and configuration in one place.
  * Modern developers increasingly use AI coding assistants.
  * [TEST] This line was added by Antigravity to verify file change tracking.
+ * [TEST-2] Verifying that this change appears in the new, isolated report.
+ * [TEST-3] Final verification of session isolation.
+ * [TEST-4] Extra test comment for further tracking.
  */
 
 import { join } from 'path';
