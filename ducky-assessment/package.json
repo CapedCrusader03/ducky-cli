@@ -1,15 +1,20 @@
 {
   "name": "ducky",
   "version": "1.0.0",
-  "description": "AI Usage Tracker CLI",
+  "description": "AI Usage Tracker CLI — passively monitors developer AI tool usage",
   "type": "module",
   "bin": {
     "ducky": "src/index.js"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "lint": "node --check src/index.js"
   },
   "dependencies": {
+    "chokidar": "^3.6.0",
     "commander": "^13.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

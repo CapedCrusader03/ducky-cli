@@ -1,3 +1,7 @@
 .litmus/
 .claude/
 .github/hooks/
+.skills/
+*.md
+!README.md
+
